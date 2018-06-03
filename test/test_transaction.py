@@ -29,7 +29,6 @@ class TestAccount(TestCase):
         account.set_balance(100)
         return account
 
-
     # ===================================================================
     # ==================== START ACTUAL TESTS ===========================
     # ===================================================================
@@ -44,11 +43,11 @@ class TestAccount(TestCase):
         self.assertEqual(
             150,
             account_under_test.get_balance(),
-            "Opening balance was 100 and the account is supposed to be credited with 50, "
+            "Opening balance was 100 and the account is credited with 50, "
             " the total should be 150."
         )
 
-    def test_debit_when_balance_less_than_amount_then_expect_false(self):
+    def test_debit_when_balance_less_than_amount_then_fail_to_debit(self):
         """
         Attempt to debit an account with an amount which is more then
         the balance of the account.
