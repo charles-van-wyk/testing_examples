@@ -1,8 +1,13 @@
 from unittest import TestCase
-from account.transaction import Account, AccountType
+from account.transaction import Account, AccountType, AccountFactory
+
+# Constants for test cases
+MIN_AMOUNT_FOR_NEW_ACCOUNT = 1000
+
 
 class TestAccount(TestCase):
-    #def setUp(self):
+    # def setUp(self):
+
 
     # ===================================================================
     # ====================== CREATION METHODS ===========================
@@ -60,4 +65,41 @@ class TestAccount(TestCase):
             account_under_test.debit(500),
             "Account has insufficient balance to perform the debit, balance is 100 and attempt to"
             " debit 500."
+        )
+
+    def test_create_new_account_when_opening_balance_less_than_min_then_expect_error(self):
+        """
+        Attempt to create an account where the opening balance is less than the
+        minimum balance allowed for a new account.
+        :var MIN_AMOUNT_FOR_NEW_ACCOUNT defined in this test class contains the minimum
+             amount for a new account.
+        """
+        with self.assertRaises(ValueError):
+            AccountFactory.open_new_account(AccountType.CHEQUE, MIN_AMOUNT_FOR_NEW_ACCOUNT / 2)
+
+    def test_create_new_account_when_invalid_account_type_then_expect_error(self):
+        """
+        Create a new account while supplying an invalid account type.
+        """
+        with self.assertRaises(AssertionError):
+            AccountFactory.open_new_account(AccountType.NONE, MIN_AMOUNT_FOR_NEW_ACCOUNT)
+
+    def test_create_new_account_when_all_details_are_valid_then_return_new_account(self):
+        """
+        Create a new account while meeting all the requirements.
+        """
+        account = AccountFactory.open_new_account(AccountType.SAVINGS, MIN_AMOUNT_FOR_NEW_ACCOUNT)
+        self.assertIsNotNone(
+            account,
+            "Account should be created as all attributes are within the business rules"
+        )
+        self.assertEqual(
+            account.get_balance(),
+            MIN_AMOUNT_FOR_NEW_ACCOUNT,
+            "Balance should be the same as what was supplied to the factory."
+        )
+        self.assertEqual(
+            account.get_type(),
+            AccountType.SAVINGS,
+            "Account type should be the same as what was supplied to the factory."
         )

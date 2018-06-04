@@ -1,5 +1,5 @@
 from unittest import TestCase
-from account.transaction import Account
+from account.transaction import Account, AccountFactory
 
 
 class TestAccountBad(TestCase):
@@ -33,3 +33,20 @@ class TestAccountBad(TestCase):
             50,
             account.get_balance()
         )
+
+    def test_create_new_account_value_error(self):
+        """
+            Check bal < 1000
+        """
+        with self.assertRaises(ValueError):
+            AccountFactory.open_new_account(1, 500)
+
+    def test_create_new_account_wrong_type(self):
+        with self.assertRaises(AssertionError):
+                AccountFactory.open_new_account(-5, 1000)
+
+    def test_create_valid_account(self):
+        account = AccountFactory.open_new_account(1, 1000)
+        self.assertIsNotNone(account, "Not none")
+        self.assertEquals(account.get_balance(), 1000, "Incorrect balance")
+        self.assertEquals(account.get_type(), 1, "Incorrect type")

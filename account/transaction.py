@@ -45,12 +45,15 @@ def pay_account(account_to_debit, account_to_credit, amount):
         account_to_credit.credit(amount)
     return success
 
-def open_new_account(account_type, opening_balance):
-    if opening_balance <= 1000:
-        raise ValueError("Opening balance does not meet the minimum requirement.")
-    elif account_type == AccountType.NONE:
-        raise ValueError("No account type specified.")
-    new_account = Account()
-    new_account.set_type(account_type)
-    new_account.set_balance(opening_balance)
-    return new_account
+
+class AccountFactory():
+    @staticmethod
+    def open_new_account(account_type, opening_balance):
+        if opening_balance < 1000:
+            raise ValueError("Opening balance does not meet the minimum requirement.")
+        elif account_type == AccountType.NONE:
+            raise AssertionError("No account type specified.")
+        new_account = Account()
+        new_account.set_type(account_type)
+        new_account.set_balance(opening_balance)
+        return new_account
