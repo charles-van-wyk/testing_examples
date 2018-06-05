@@ -11,39 +11,38 @@ class AccountType(Enum):
 class Account:
 
     def __init__(self):
-        self._balance = 0.0
-        self._type = AccountType.NONE
-
-
-    def set_balance(self, new_balance):
-        self._balance = new_balance
-
-    def get_balance(self):
-        return self._balance
-
-    def set_type(self, new_type):
-        self._type = new_type
-
-    def get_type(self):
-        return self._type
-
+        self.balance = 0.0
+        self.type = AccountType.NONE
+        self.account_number = 0
 
     def credit(self, amount):
-        self._balance += amount
+        self.balance += amount
 
     def debit(self, amount):
-        if 0 < self._balance >= amount:
-            self._balance -= amount
+        if 0 < self.balance >= amount:
+            self.balance -= amount
             return True
         else:
             return False
 
 
 def pay_account(account_to_debit, account_to_credit, amount):
+    """
+    Transfer money from one account to another
+    :param account_to_debit: account to subtract money from.
+    :param account_to_credit: account to put money into
+    :param amount: the amount of the transaction
+    :return: true if the transaction was successful.
+    """
     success = account_to_debit.debit(amount)
     if success:
         account_to_credit.credit(amount)
     return success
+
+
+# def purchase(item_to_buy, account):
+
+
 
 
 class AccountFactory():
@@ -53,7 +52,8 @@ class AccountFactory():
             raise ValueError("Opening balance does not meet the minimum requirement.")
         elif account_type == AccountType.NONE:
             raise AssertionError("No account type specified.")
+
         new_account = Account()
-        new_account.set_type(account_type)
-        new_account.set_balance(opening_balance)
+        new_account.type = account_type
+        new_account.opening_balance = opening_balance
         return new_account

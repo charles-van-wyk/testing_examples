@@ -21,8 +21,8 @@ class TestAccount(TestCase):
         :return: account with negative balance
         """
         account_in_red = Account()
-        account_in_red.set_balance(-600)
-        account_in_red.set_type(AccountType.SAVINGS)
+        account_in_red.balance = -600
+        account_in_red.type = AccountType.SAVINGS
 
     @staticmethod
     def account_with_100_balance():
@@ -31,7 +31,7 @@ class TestAccount(TestCase):
                  100.
         """
         account = Account()
-        account.set_balance(100)
+        account.balance = 100
         return account
 
     # ===================================================================
@@ -47,7 +47,7 @@ class TestAccount(TestCase):
         account_under_test.credit(50)
         self.assertEqual(
             150,
-            account_under_test.get_balance(),
+            account_under_test.balance,
             "Opening balance was 100 and the account is credited with 50, "
             " the total should be 150."
         )
@@ -94,12 +94,12 @@ class TestAccount(TestCase):
             "Account should be created as all attributes are within the business rules"
         )
         self.assertEqual(
-            account.get_balance(),
+            account.balance,
             MIN_AMOUNT_FOR_NEW_ACCOUNT,
             "Balance should be the same as what was supplied to the factory."
         )
         self.assertEqual(
-            account.get_type(),
+            account.type,
             AccountType.SAVINGS,
             "Account type should be the same as what was supplied to the factory."
         )

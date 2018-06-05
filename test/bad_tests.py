@@ -7,13 +7,13 @@ class TestAccountBad(TestCase):
         self.a = Account()
 
     def test_credit_150(self):
-        self.a.set_balance(100)
+        self.a.balance = 100
         self.a.credit(50)
-        self.assertEqual(150, self.a.get_balance(), "Should be 150")
+        self.assertEqual(150, self.a.balance, "Should be 150")
 
     def test_debit_insufficient_funds(self):
         # Not enough funds in account
-        self.a.set_balance(100)
+        self.a.balance = 100
         self.assertFalse(self.a.debit(150))
 
     def test_credit_then_debit(self):
