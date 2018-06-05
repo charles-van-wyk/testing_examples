@@ -11,7 +11,7 @@ class AccountType(Enum):
 class Account:
 
     def __init__(self):
-        self.balance = 0.0
+        self.balance = 0
         self.type = AccountType.NONE
         self.account_number = 0
 
@@ -55,5 +55,5 @@ class AccountFactory():
 
         new_account = Account()
         new_account.type = account_type
-        new_account.opening_balance = opening_balance
+        new_account.balance = opening_balance
         return new_account

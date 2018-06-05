@@ -1,5 +1,5 @@
 from unittest import TestCase
-from account.transaction import Account, AccountFactory
+from account.transaction import Account, AccountFactory, AccountType
 
 
 class TestAccountBad(TestCase):
@@ -21,17 +21,17 @@ class TestAccountBad(TestCase):
         account.credit(100)
         # test credit
         self.assertEqual(
-            "Amount should be 100.",
             100,
-            account.get_balance()
+            account.balance,
+            "Amount should be 100."
         )
 
         # test debit
         account.debit(50)
         self.assertEqual(
-            "Amount should be 50.",
             50,
-            account.get_balance()
+            account.balance,
+            "Amount should be 50."
         )
 
     def test_create_new_account_value_error(self):
@@ -39,14 +39,14 @@ class TestAccountBad(TestCase):
             Check bal < 1000
         """
         with self.assertRaises(ValueError):
-            AccountFactory.open_new_account(1, 500)
+            AccountFactory.open_new_account(AccountType.SAVINGS, 500)
 
     def test_create_new_account_wrong_type(self):
         with self.assertRaises(AssertionError):
-                AccountFactory.open_new_account(-5, 1000)
+                AccountFactory.open_new_account(AccountType.NONE, 1000)
 
     def test_create_valid_account(self):
         account = AccountFactory.open_new_account(1, 1000)
         self.assertIsNotNone(account, "Not none")
-        self.assertEquals(account.get_balance(), 1000, "Incorrect balance")
-        self.assertEquals(account.get_type(), 1, "Incorrect type")
+        self.assertEquals(account.balance, 1000, "Incorrect balance")
+        self.assertEquals(account.type, 1, "Incorrect type")
