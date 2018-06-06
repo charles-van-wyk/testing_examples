@@ -84,7 +84,7 @@ class TestAccount(TestCase):
         with self.assertRaises(AssertionError):
             AccountFactory.open_new_account(AccountType.NONE, MIN_AMOUNT_FOR_NEW_ACCOUNT)
 
-    def test_create_new_account_when_all_details_are_valid_then_return_new_account(self):
+    def test_create_new_account_when_all_details_are_valid_then_return_created_account(self):
         """
         Create a new account while meeting all the requirements.
         """

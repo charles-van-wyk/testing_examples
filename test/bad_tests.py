@@ -46,7 +46,7 @@ class TestAccountBad(TestCase):
                 AccountFactory.open_new_account(AccountType.NONE, 1000)
 
     def test_create_valid_account(self):
-        account = AccountFactory.open_new_account(1, 1000)
-        self.assertIsNotNone(account, "Not none")
-        self.assertEquals(account.balance, 1000, "Incorrect balance")
-        self.assertEquals(account.type, 1, "Incorrect type")
+        a = AccountFactory.open_new_account(1, 1000)
+        self.assertIsNotNone(a, "Not none")
+        self.assertEquals(a.balance, 1000, "Incorrect balance")
+        self.assertEquals(a.type, 1, "Incorrect type")
