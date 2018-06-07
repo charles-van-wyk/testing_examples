@@ -1,8 +1,16 @@
+from account.transaction import (
+    Account,
+    AccountType,
+    AccountFactory,
+    ChequeAccountInterestCalculator,
+    calculate_interest,
+)
+from mockito import mock, when, ANY
 from unittest import TestCase
-from account.transaction import Account, AccountType, AccountFactory
 
 # Constants for test cases
 MIN_AMOUNT_FOR_NEW_ACCOUNT = 1000
+CHEQUE_ACCOUNT_INTEREST = 3
 
 
 class TestAccount(TestCase):
@@ -102,4 +110,21 @@ class TestAccount(TestCase):
             account.type,
             AccountType.SAVINGS,
             "Account type should be the same as what was supplied to the factory."
+        )
+
+    def test_calculate_interest_when_cheque_account_then_expect_three_percent(self):
+        """
+        Using a cheque account with 100 balance, expecting
+        3% increase.
+        given 100 balance
+        expected 3 interest.
+        """
+        account = TestAccount.account_with_100_balance()
+        calculator = mock(ChequeAccountInterestCalculator)
+        when(calculator).calculate(ANY).thenReturn(CHEQUE_ACCOUNT_INTEREST)
+        self.assertEqual(
+            calculate_interest(account, calculator),
+            CHEQUE_ACCOUNT_INTEREST,
+            "Expected to calculate interest as there is nothing preventing the account from"
+            "being calculated."
         )

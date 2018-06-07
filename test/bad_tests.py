@@ -1,5 +1,12 @@
 from unittest import TestCase
-from account.transaction import Account, AccountFactory, AccountType
+from account.transaction import (
+    Account,
+    AccountFactory,
+    AccountType,
+    find_interest_calculator,
+    calculate_interest,
+    ChequeAccountInterestCalculator
+)
 
 
 class TestAccountBad(TestCase):
@@ -48,5 +55,15 @@ class TestAccountBad(TestCase):
     def test_create_valid_account(self):
         a = AccountFactory.open_new_account(1, 1000)
         self.assertIsNotNone(a, "Not none")
-        self.assertEquals(a.balance, 1000, "Incorrect balance")
-        self.assertEquals(a.type, 1, "Incorrect type")
+        self.assertEqual(a.balance, 1000, "Incorrect balance")
+        self.assertEqual(a.type, 1, "Incorrect type")
+
+    def test_cheque_account_interest(self):
+        account = Account()
+        account.balance = 100
+        account.type = AccountType.CHEQUE
+        calculator = find_interest_calculator(account.type)
+        self.assertTrue(isinstance(calculator, ChequeAccountInterestCalculator), "Is a cheque account.")
+
+        interest = calculate_interest(account, calculator)
+        self.assertEqual(interest, 3, "3% of 100 is 3.")

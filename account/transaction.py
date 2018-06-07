@@ -1,4 +1,4 @@
-
+from abc import ABC, abstractmethod
 from enum import Enum
 
 
@@ -40,12 +40,21 @@ def pay_account(account_to_debit, account_to_credit, amount):
     return success
 
 
-# def purchase(item_to_buy, account):
+def calculate_interest(account, interest_calculator):
+    if account.balance > 0:
+        return interest_calculator.calculate(account)
+    else:
+        return 0.0
 
 
+def find_interest_calculator(account_type):
+    if account_type == AccountType.SAVINGS:
+        return SavingsAccountInterestCalculator()
+    else:
+        return ChequeAccountInterestCalculator()
 
 
-class AccountFactory():
+class AccountFactory:
     @staticmethod
     def open_new_account(account_type, opening_balance):
         if opening_balance < 1000:
@@ -57,3 +66,22 @@ class AccountFactory():
         new_account.type = account_type
         new_account.balance = opening_balance
         return new_account
+
+
+class InterestCalculator(ABC):
+    @abstractmethod
+    def calculate(self, account):
+        pass
+
+
+class SavingsAccountInterestCalculator(InterestCalculator):
+    def calculate(self, account):
+        if account.balance < 10000:
+            return account.balance * .05
+        else:
+            return account.balance * .025
+
+
+class ChequeAccountInterestCalculator(InterestCalculator):
+    def calculate(self, account):
+        return account.balance * .03
